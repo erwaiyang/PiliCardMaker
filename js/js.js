@@ -43,22 +43,45 @@
 		var leng = hpORmp.length;
 		for(var d=leng-1; d>=0; d--){
 			fabric.Image.fromURL(
-			attr_img_path+hpORmp[d]+'.png',
-			function(output_hp){
-				canvas.add(output_hp);
-			},
-			{
-				left:set_left+d*17,
-				top:set_top,
-				width:20,
-				height:20,
-				selectable:false
-			}
-		);
-			
+				attr_img_path+hpORmp[d]+'.png',
+				function(output_hp){
+					canvas.add(output_hp);
+				},
+				{
+					left:set_left + d * 18,
+					top:set_top,
+					width:18,
+					height:22,
+					selectable:false
+				}
+			);
 		}
 	};
 	
+	$.setCost = function(cost, set_top, set_left){
+		var leng = cost.length;
+		//反轉字串順序
+		cost = cost.split("").reverse().join("");
+		//cost只有一位數時，將圖片往左移
+		var offset = (cost.length==1)? -6:0;
+
+		for(var d=leng-1; d>=0; d--){
+			fabric.Image.fromURL(
+				cost_img_path + cost[d] + '.png',
+				function(role_cost){
+					canvas.add(role_cost);
+				},
+				{
+					left:set_left + offset + d*(-12),
+					top:set_top,
+					width:18,
+					height:18,
+					selectable:false
+				}
+			);
+		}
+	};
+
 })(jQuery);
 	
 	/****************畫布設定****************/
@@ -101,9 +124,9 @@
 				vertical_name,
 				{
 					opacity:0.9,
-					left:18,
+					left:16,
 					top:90+offset,
-					fontSize:30,
+					fontSize:32,
 					fontFamily:'DFXingKai Std, 華康行楷體, 微軟正黑體, 標楷體',
 					selectable:false
 				}
@@ -161,34 +184,16 @@
 		//更改COST
 		var role_cost = null;
 		$('#input_cost').change(function(e){
-			canvas.remove(role_cost);
-			
+			var top = 410, left=17;
+			$(window.canvas._objects).removeThoseOnCanvas(top);
 			var cost = $(this).val();
-			
-				var offset = 0; //以2位數為基準
-				if(cost<10){
-					offset = 7;
-				}
-			
-			role_cost = new fabric.Text(
-				cost,
-				{
-					opacity:0.95,
-					left:7+offset,
-					top:395,
-					fontSize:24,
-					fill:'rgb(255,255,255)',
-					fontFamily:'Autumn, 微軟正黑體',
-					selectable:false
-				}
-			); 
-			
-			canvas.add(role_cost).renderAll();
+			$.setCost(cost, top, left);
+			canvas.renderAll();
 		});
 		
 		//更改HP
 		$('#input_hp').change(function(e){
-			var hp_top = 348, hp_left=190;
+			var hp_top = 355, hp_left=190;
 			$(window.canvas._objects).removeThoseOnCanvas(hp_top);
 			var role_hp = $(this).val();
 			$.setNumbers(role_hp,hp_top,hp_left);
@@ -198,7 +203,7 @@
 		
 		//更改MP
 		$('#input_mp').change(function(e){
-			var mp_top = 378, mp_left = 168;
+			var mp_top = 385, mp_left = 168;
 			$(window.canvas._objects).removeThoseOnCanvas(mp_top);
 			var role_mp = $(this).val();
 			$.setNumbers(role_mp,mp_top,mp_left);
