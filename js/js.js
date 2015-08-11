@@ -29,7 +29,7 @@
 		var leng = hpORmp.length;
 		for(var d=leng-1; d>=0; d--){
 			fabric.Image.fromURL(
-			'../img/util/number/'+hpORmp[d]+'.png',
+			'./img/util/number/'+hpORmp[d]+'.png',
 			function(output_hp){
 				canvas.add(output_hp);
 			},
@@ -51,13 +51,13 @@
 		var canvas = new fabric.Canvas('c');
 
 		//設定背景
-		canvas.setBackgroundImage('../img/bg/green.jpg', canvas.renderAll.bind(canvas));
+		canvas.setBackgroundImage('./img/bg/green.jpg', canvas.renderAll.bind(canvas));
 		
 		var role_border = null;
 		var role_border_type = 'gold';
 		//邊框顏色
 		fabric.Image.fromURL(
-			'../img/border/gold.png', 
+			'./img/border/gold.png', 
 			function(o){
 				canvas.add(o);
 				role_border = o;
@@ -68,7 +68,7 @@
 		
 		//漸層
 		fabric.Image.fromURL(
-			'../img/util/gradient_hp_mp.png', 
+			'./img/util/gradient_hp_mp.png', 
 			function(o){
 				canvas.add(o);
 				o.sendBackwards(true);
@@ -117,7 +117,7 @@
 		var role_p1 = null;
 		$('td#p1 button').click(function(e){
 			canvas.remove(role_p1);
-			var img_url = '../img/p1/'+role_border_type+'/'+$(this).val()+'.png';
+			var img_url = './img/p1/'+role_border_type+'/'+$(this).val()+'.png';
 			
 			fabric.Image.fromURL(
 				img_url,
@@ -140,7 +140,7 @@
 		var role_p2 = null;
 		$('td#p2 button').click(function(e){
 			canvas.remove(role_p2);
-			var img_url2 = '../img/p2/'+role_border_type+'/'+$(this).val()+'.png';
+			var img_url2 = './img/p2/'+role_border_type+'/'+$(this).val()+'.png';
 			
 			fabric.Image.fromURL(
 				img_url2,
@@ -213,7 +213,7 @@
 			$(window.canvas._objects).removeThoseOnCanvas(30);
 			for(var b=0;b<role_star;b++){
 				fabric.Image.fromURL(
-					'../img/util/star.png',
+					'./img/util/star.png',
 					function(output){
 						canvas.add(output);
 					},
@@ -246,7 +246,7 @@
 			if(card_name!=role_border_type){
 				canvas.remove(role_border);				
 				fabric.Image.fromURL(
-					"../img/border/"+card_name+".png",
+					"./img/border/"+card_name+".png",
 					function(output){
 						canvas.add(output);
 						role_border = output;
@@ -263,7 +263,7 @@
 		//更改背景
 		var insert_bg_imgs = '';
 		for(var c=0; c<bg_imgs.length; c++){
-			insert_bg_imgs+='<a href="#" class="bg_imgs_change"><img src="../img/bg/'+bg_imgs[c]+'.jpg" width="50px" height="50px" /></a> ';
+			insert_bg_imgs+='<a href="#" class="bg_imgs_change"><img src="./img/bg/'+bg_imgs[c]+'.jpg" width="50px" height="50px" /></a> ';
 		}
 		$('div#bg_img_select').html(insert_bg_imgs);
 		
