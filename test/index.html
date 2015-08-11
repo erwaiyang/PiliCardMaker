@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>霹靂群雄戰之自己動手做卡片</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body>
+	<div id="fontList">Loading Your Fonts...Please Wait</div>
+	<div id="selection"></div>
+	<!-- CDN -->
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script>
+//Credits to http://hasseg.org/stuff/fontList/example.html
+
+function populateFontList(fontArr)
+{
+	var allFontsCounter = 0;
+	var regularFontsCounter = 0;
+	var totalFonts = '<select id="fontSelector">';
+	
+	for (var key in fontArr)
+	{
+		var fontName = fontArr[key];
+		// trim
+		fontName = fontName.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+		
+		if (fontName.match(/[_\-\s]Italic$/)
+			|| fontName.match(/[_\-\s](Demi)?[Bb]old$/)
+			|| fontName.match(/[_\-\s]Medium$/)
+			|| fontName.match(/[_\-\s](Ultra)?[Ll]ight$/)
+			|| fontName.match(/[_\-\s]Condensed$/)
+			)
+		{
+			
+		}
+		else
+		{
+			fontName = fontName.replace(/\s*Regular$/, '');
+			totalFonts += '<option value="'+fontName+'">'+fontName+'</option>';
+			regularFontsCounter++;
+		}
+		
+		allFontsCounter++;
+	}
+	
+	totalFonts += '</select>';
+	
+	$('div#fontList').html(totalFonts);
+	
+	$('select#fontSelector').on('change', function() {
+		$('#selection').html( this.value );
+	});
+}
+
+
+</script>
+<!--
+<script>
+//Credits to http://hasseg.org/stuff/fontList/example.html
+function populateFontList(fontArr)
+{
+	var allFontsCounter = 0;
+	var regularFontsCounter = 0;
+	var allFontsHTML = '<ul>';
+	var regularFontsHTML = allFontsHTML;
+	
+	for (var key in fontArr)
+	{
+		var fontName = fontArr[key];
+		
+		// trim
+		fontName = fontName.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+		
+		if (fontName.match(/[_\-\s]Italic$/)
+			|| fontName.match(/[_\-\s](Demi)?[Bb]old$/)
+			|| fontName.match(/[_\-\s]Medium$/)
+			|| fontName.match(/[_\-\s](Ultra)?[Ll]ight$/)
+			|| fontName.match(/[_\-\s]Condensed$/)
+			)
+			allFontsHTML += '<li style="color:#aaa;">'+fontName+'</li>';
+		else
+		{
+			allFontsHTML += '<li>'+fontName+'</li>';
+			fontName = fontName.replace(/\s*Regular$/, '');
+			regularFontsHTML += '<li>'+fontName+'</li>';
+			regularFontsCounter++;
+		}
+		
+		allFontsCounter++;
+	}
+	
+	regularFontsHTML += '</ul>';
+	allFontsHTML += '</ul>';
+	allFontsHTML = allFontsCounter+' fonts altogether:'+allFontsHTML;
+	regularFontsHTML = regularFontsCounter+' "regular" fonts:'+regularFontsHTML;
+	
+	document.getElementById('fontList').innerHTML = allFontsHTML;
+	document.getElementById('regularFontList').innerHTML = regularFontsHTML;
+}
+</script>
+-->
+<object id="fontListSWF" name="fontListSWF"
+	type="application/x-shockwave-flash"
+	data="FontList.swf" width="1" height="1"
+>
+</body>
+</html>
