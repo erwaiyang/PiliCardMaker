@@ -359,25 +359,70 @@
 			$('button#resetForm').click(function(){
 				canvas.remove(role_img);
 				$("input").val('');
-				$(window.canvas._objects).removeThoseOnCanvas(false);
+				$("input[name=p1]").button('reset');
+				//$(window.canvas._objects).removeThoseOnCanvas(false);
 			});
+		//三個隨機按鈕
+			$('button.random_btn').click(function(e){
+				var input = "input_" + (this.value);
+				var output = 0;
+				switch (this.value){
+					case "cost":
+						output = getRandCost(role_border_type);
+					break;
+					case "hp":
+						output = getRandHpOrMp(role_border_type);
+					break;
+					case "mp":
+						output = getRandHpOrMp(role_border_type);
+					break;
+
+				}
+				$('#' + input ).val(output).trigger('change');
+			});
+
+			//COST
+			function getRandCost(role_border_type){
+				var rand_cost = 0;
+				switch(role_border_type){
+					case "copper":
+						rand_cost = getRandomInt(3,10);
+					break;
+					case "silver":
+						rand_cost = getRandomInt(10,17);
+					break;
+					case "gold":
+					default:
+						rand_cost = getRandomInt(12,31);
+					break;
+				}
+				return rand_cost;
+			}
+			//hp or mp
+			function getRandHpOrMp(role_border_type){
+				var rand = 0;
+				switch(role_border_type){
+					case "copper":
+						rand = getRandomInt(200,600);
+					break;
+					case "silver":
+						rand = getRandomInt(500,2000);
+					break;
+					case "gold":
+					default:
+						rand = getRandomInt(1800,4200);
+					break;
+				}
+				return rand;
+			}
 	
-	/****************更新****************/
-	//調整字型
+	/*********調整字型***********/
 	$('#change_name_font').click(function(e){
 		if($('input#input_name').val()!=''){
 			role_name.setFontFamily($('input#input_name_fontfamily').val());
 			canvas.renderAll();
 		}
 	});
-	/*
-	$('#change_cost_font').click(function(e){
-		if($('#input_cost').val()!=''){
-			role_cost.setFontFamily($('#input_cost_fontfamily').val());
-			canvas.renderAll();
-		}
-	});
-	*/
 	$('a#fontMode_input').click(function(){
 		$('span#fontMode_input').show();
 		$('span#fontMode_auto').add('#alertBox').hide();
