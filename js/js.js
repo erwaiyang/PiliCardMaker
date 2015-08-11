@@ -251,6 +251,11 @@
 					border_img_path + card_name+".png",
 					function(output){
 						canvas.add(output);
+						//將邊框送到倒數第二的圖層
+						canvas.sendToBack(output);
+						if(role_img!=null){
+							role_img.sendToBack().setOpacity(1);
+						}
 						role_border = output;
 					},
 					{
@@ -290,7 +295,7 @@
 							options.width = 400;
 							var p = (400/w);
 							options.height = h*p;
-							console.log('p='+p+' '+options.width+' '+options.height);
+							//console.log('p='+p+' '+options.width+' '+options.height);
 						}
 						//把圖片載入到畫布中
 						fabric.Image.fromURL(e.target.result, function(oImg) {
