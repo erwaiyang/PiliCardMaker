@@ -2,6 +2,8 @@
 	//背景圖片
 	var bg_imgs = ['green','blue','pinkpurple'];
 	//(DOM)畫布上的物件
+	var cost_sprite = './img/cost_number.png';
+	var attr_sprite = './img/attribute_number.png';
 	
 (function($){
 	//統一刪除
