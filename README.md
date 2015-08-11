@@ -7,5 +7,5 @@ MIT License.
 
 ***
 
-##使用方法
-請參照./manual.html
+##線上使用網頁
+[GitHub.io](http://erwaiyang.github.io/PiliCardMaker/)
