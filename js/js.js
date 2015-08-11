@@ -426,3 +426,18 @@
 		});
 	}
 	
+	/*****************dialog******************/
+	$.ajax({
+		url: './modal/author.html',
+		dataType: 'html',
+		success: function (data){
+			$('body').append(data);
+		}
+	});
+	$.ajax({
+		url: './modal/mustread.html',
+		dataType: 'html',
+		success: function (data){
+			$('body').append(data);
+		}
+	});
