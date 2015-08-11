@@ -1,6 +1,21 @@
 ﻿	/****************公用區****************/
-	//背景圖片
+	var img_path = "./img/sprite/";
+	//background
 	var bg_imgs = ['green','blue','pinkpurple'];
+	var bg_img_path = img_path + "bg/";
+	//border
+	var border_img_path = img_path + "border/";
+	//p1
+	var p1_img_path = img_path + "p1/";
+	//p2
+	var p2_img_path = img_path + "p2/";
+	//star
+	var star_img = img_path + "star/star.png";
+	//cost
+	var cost_img_path = img_path + "cost/";
+	//attr
+	var attr_img_path = img_path + "attr/";
+
 	
 (function($){
 	//統一刪除
@@ -28,7 +43,7 @@
 		var leng = hpORmp.length;
 		for(var d=leng-1; d>=0; d--){
 			fabric.Image.fromURL(
-			'./img/util/number/'+hpORmp[d]+'.png',
+			attr_img_path+hpORmp[d]+'.png',
 			function(output_hp){
 				canvas.add(output_hp);
 			},
@@ -50,13 +65,13 @@
 		var canvas = new fabric.Canvas('c');
 
 		//設定背景
-		canvas.setBackgroundImage('./img/bg/green.jpg', canvas.renderAll.bind(canvas));
+		canvas.setBackgroundImage(bg_img_path+'green.jpg', canvas.renderAll.bind(canvas));
 		
 		var role_border = null;
 		var role_border_type = 'gold';
 		//邊框顏色
 		fabric.Image.fromURL(
-			'./img/border/gold.png', 
+			border_img_path+'gold.png', 
 			function(o){
 				canvas.add(o);
 				role_border = o;
@@ -64,21 +79,6 @@
 			{
 				selectable:false
 			});
-		
-		//漸層
-		fabric.Image.fromURL(
-			'./img/util/gradient_hp_mp.png', 
-			function(o){
-				canvas.add(o);
-				o.sendBackwards(true);
-			},
-			{
-				top:339,
-				left:90,
-				opacity:1,
-				selectable:false
-			});
-			
 	/****************控制區****************/
 		//名字輸入
 		var role_name = null;
@@ -101,7 +101,7 @@
 				vertical_name,
 				{
 					opacity:0.9,
-					left:16,
+					left:18,
 					top:90+offset,
 					fontSize:30,
 					fontFamily:'DFXingKai Std, 華康行楷體, 微軟正黑體, 標楷體',
@@ -262,7 +262,7 @@
 		//更改背景
 		var insert_bg_imgs = '';
 		for(var c=0; c<bg_imgs.length; c++){
-			insert_bg_imgs+='<a href="#" class="bg_imgs_change"><img src="./img/bg/'+bg_imgs[c]+'.jpg" width="50px" height="50px" /></a> ';
+			insert_bg_imgs+='<a href="#" class="bg_imgs_change"><img src="'+bg_img_path+bg_imgs[c]+'.jpg" width="50px" height="50px" /></a> ';
 		}
 		$('div#bg_img_select').html(insert_bg_imgs);
 		
