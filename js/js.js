@@ -212,30 +212,31 @@
 		});
 		
 		//更改星等
-		$('td#stars button').click(function(e){
-			var role_star = $(this).val();
+		$("input[type=radio][name=p3]").on('change', function(e){
+			var role_star = (this.value);
 			$(window.canvas._objects).removeThoseOnCanvas(30);
 			for(var b=0;b<role_star;b++){
 				fabric.Image.fromURL(
-					'./img/util/star.png',
+					star_img,
 					function(output){
-						canvas.add(output);
+						canvas.add(output)
 					},
 					{
-						left:75+(b*29),
-						top:30,
-						width:23,
-						height:25,
-						selectable:false
+						left:78+(b*29),
+		 				top:30,
+		 				width:23,
+		 				height:25,
+		 				selectable:false
 					}
-				); 
+				);
 			}
+
 			//改邊框
 			var card_name = "";
 			switch(role_star){
 				case"1":
 				case"2":
-					card_name = "normal";
+					card_name = "copper";
 				break;
 				case"3":
 				case"4":
@@ -246,11 +247,11 @@
 					card_name = "gold";
 				break;
 			}
-			
+
 			if(card_name!=role_border_type){
 				canvas.remove(role_border);				
 				fabric.Image.fromURL(
-					"./img/border/"+card_name+".png",
+					border_img_path + card_name+".png",
 					function(output){
 						canvas.add(output);
 						role_border = output;
@@ -259,10 +260,61 @@
 						selectable:false
 					}
 				); 
+				
 				role_border_type = card_name;
 			}
-		
 		});
+		// $('td#stars button').click(function(e){
+		// 	var role_star = $(this).val();
+		// 	$(window.canvas._objects).removeThoseOnCanvas(30);
+		// 	for(var b=0;b<role_star;b++){
+		// 		fabric.Image.fromURL(
+		// 			'./img/util/star.png',
+		// 			function(output){
+		// 				canvas.add(output);
+		// 			},
+		// 			{
+		// 				left:75+(b*29),
+		// 				top:30,
+		// 				width:23,
+		// 				height:25,
+		// 				selectable:false
+		// 			}
+		// 		); 
+		// 	}
+		// 	//改邊框
+		// 	var card_name = "";
+		// 	switch(role_star){
+		// 		case"1":
+		// 		case"2":
+		// 			card_name = "normal";
+		// 		break;
+		// 		case"3":
+		// 		case"4":
+		// 			card_name = "silver";
+		// 		break;
+		// 		case"5":
+		// 		case"6":
+		// 			card_name = "gold";
+		// 		break;
+		// 	}
+			
+		// 	if(card_name!=role_border_type){
+		// 		canvas.remove(role_border);				
+		// 		fabric.Image.fromURL(
+		// 			"./img/border/"+card_name+".png",
+		// 			function(output){
+		// 				canvas.add(output);
+		// 				role_border = output;
+		// 			},
+		// 			{
+		// 				selectable:false
+		// 			}
+		// 		); 
+		// 		role_border_type = card_name;
+		// 	}
+		
+		// });
 		
 		//更改背景
 		var insert_bg_imgs = '';
