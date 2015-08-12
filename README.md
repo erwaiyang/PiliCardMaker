@@ -14,3 +14,13 @@ MIT License.
 ***
 
 ##使用說明書
+1. STEP ONE
+<img src="./img/manual/1.jpg" width="1000px" />
+2. STEP TWO
+<img src="./img/manual/2.jpg" width="1000px" />
+3. STEP THREE
+<img src="./img/manual/3.jpg" width="1000px" />
+4. STEP FOUR
+<img src="./img/manual/4.jpg" width="1000px" />
+5. STEP FIVE
+<img src="./img/manual/5.jpg" width="1000px" />
