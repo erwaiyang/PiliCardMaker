@@ -1,11 +1,12 @@
 ﻿	/****************公用區****************/
 	var img_path = "./img/sprite/";
-	//background
-	var bg_imgs = ['green','blue','pinkpurple'];
-	var bg_img_path = img_path + "bg/";
 
-	//各個在畫面上的位置
+	//每個在畫面上的物件
 	var myObj = {
+		'bg':{
+			names: ['green','blue','pinkpurple'],
+			img_path: img_path + 'bg/'
+		},
 		'img':{
 			instance: null
 		},
@@ -13,7 +14,7 @@
 			top:0,
 			left:0,
 			type: 'gold',
-			img_path: img_path + "border/"
+			img_path: img_path + 'border/'
 		},
 		'star': {
 			top:30,
@@ -201,7 +202,7 @@
 	/****************畫布設定****************/
 		var canvas = new fabric.Canvas('c');
 		//設定背景
-		canvas.setBackgroundImage( bg_img_path + 'green.jpg', canvas.renderAll.bind(canvas));
+		canvas.setBackgroundImage( myObj.bg.img_path + 'green.jpg', canvas.renderAll.bind(canvas));
 		$.setBorder();
 
 	/****************控制區****************/
@@ -369,12 +370,13 @@
 		
 		//更改背景
 		var insert_bg_imgs = '';
-		for(var c=0; c<bg_imgs.length; c++){
-			insert_bg_imgs+='<a href="#" class="bg_imgs_change"><img src="'+bg_img_path+bg_imgs[c]+'.jpg" width="50px" height="50px" /></a> ';
+		for(var c=0; c<myObj.bg.names.length; c++){
+			insert_bg_imgs+='<a href="#" class="bg_imgs_change"><img src="'+ myObj.bg.img_path + myObj.bg.names[c]+'.jpg" width="50px" height="50px" /></a> ';
 		}
 		$('div#bg_img_select').html(insert_bg_imgs);
 		
-		$('.bg_imgs_change').on('click',function(){
+		$('.bg_imgs_change').on('click',function(e){
+			e.preventDefault();
 			canvas.setBackgroundImage($(this).children('img').attr('src'), canvas.renderAll.bind(canvas));
 		});
 
