@@ -176,35 +176,39 @@
 
 	/****************控制區****************/
 		//名字輸入
-		var role_name = null;
 		$('#input_name').change(function(e){
-			canvas.remove(role_name);
-		
+			//清除舊的
+			canvas.remove(myObj.name.instance);
+			
 			var name = $(this).val();
+			//把名字轉換成直行
 			var vertical_name = '';
-			var leng = name.length;
-			for(var a=0;a<leng;a++){
+			var length = name.length;
+			for(var a=0;a<length;a++){
 				vertical_name += name[a];
-				if(a!=leng){
+				//尚未到達最後一字時，每個字換一行
+				if(a!=length){
 					vertical_name += '\n';
 				}
 			}
+
 			//根據字數計算TOP的位置
-			var offset = (leng -3)*(-18); //以3個字為基準
+			var offset = (length -3)*(-18); //以3個字為基準
 			
-			role_name = new fabric.Text(
+			myObj.name.instance = 
+			new fabric.Text(
 				vertical_name,
 				{
 					opacity:0.9,
-					left:16,
-					top:90+offset,
+					left: myObj.name.left,
+					top: myObj.name.top + offset,
 					fontSize:32,
 					fontFamily:'DFXingKai Std, 華康行楷體, 微軟正黑體, 標楷體',
 					selectable:false
 				}
 			); 
 			
-			canvas.add(role_name).renderAll();
+			canvas.add(myObj.name.instance).renderAll();
 		});
 		
 		//更改勢力範圍(p1)
