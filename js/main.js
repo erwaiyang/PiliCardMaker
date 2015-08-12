@@ -3,12 +3,6 @@
 	//background
 	var bg_imgs = ['green','blue','pinkpurple'];
 	var bg_img_path = img_path + "bg/";
-	//border
-	var border_img_path = img_path + "border/";
-	//star
-	var star_img = img_path + "star/star.png";
-	//attr
-	var attr_img_path = img_path + "attr/";
 
 	//各個在畫面上的位置
 	var myObj = {
@@ -18,13 +12,15 @@
 		'border': {
 			top:0,
 			left:0,
-			instance: null
+			type: 'gold',
+			img_path: img_path + "border/"
 		},
 		'star': {
 			top:30,
 			left:78,
-			instance: null,
-			img_path: img_path + 'star/'
+			width:23,
+			height:25,
+			img_path: img_path + 'star/star.png'
 		},
 		'name': {
 			top:90,
@@ -182,30 +178,31 @@
 		canvas.renderAll();
 	};
 
+	//for border
+	$.setBorder = function(){
+		fabric.Image.fromURL(
+			myObj.border.img_path + myObj.border.type +'.png', 
+			function(output){
+				canvas.add(output);
+				//將邊框送到倒數第二的圖層
+				output.sendToBack();
+				if(role_img!=null){
+					role_img.sendToBack().setOpacity(1);
+				}
+			},
+			{
+				selectable:false
+			}
+		);
+	}
+
 })(jQuery);
 	
 	/****************畫布設定****************/
 		var canvas = new fabric.Canvas('c');
-
 		//設定背景
-		canvas.setBackgroundImage(bg_img_path+'green.jpg', canvas.renderAll.bind(canvas));
-		
-		//var role_border = null;
-		var role_border_type = 'gold';
-
-		function setBorder(role_border_type){
-			fabric.Image.fromURL(
-				border_img_path+ role_border_type +'.png', 
-				function(output){
-					canvas.add(output);
-					myObj.border.instance = output;
-				},
-				{
-					selectable:false
-				}
-			);
-		}
-		setBorder(role_border_type);
+		canvas.setBackgroundImage( bg_img_path + 'green.jpg', canvas.renderAll.bind(canvas));
+		$.setBorder();
 
 	/****************控制區****************/
 		//名字輸入
@@ -242,7 +239,6 @@
 			); 
 			
 			canvas.add(myObj.name.instance).renderAll();
-			console.log($(window.canvas._objects));
 		});
 		//更改勢力範圍(p1)
 		$("input[type=radio][name=p1]").on('change', function(e){
@@ -274,61 +270,53 @@
 			//更改星星：先刪光再放上去
 			var star = (this.value);
 			$(window.canvas._objects).removeThoseOnCanvas(30);
-			for(var b=0;b<star;b++){
+
+			for(var i = 0; i < star; i++){
 				fabric.Image.fromURL(
-					star_img,
+					myObj.star.img_path,
 					function(output){
 						canvas.add(output)
 					},
 					{
-						left:78+(b*29),
-		 				top:30,
-		 				width:23,
-		 				height:25,
+						left: myObj.star.left + ( i * 29 ),
+		 				top: myObj.star.top,
+		 				width: myObj.star.width,
+		 				height: myObj.star.height,
 		 				selectable:false
 					}
 				);
 			}
 
 			//改邊框
-			var card_name = "";
+			var tmp = "";
 			switch(star){
 				case"1":
 				case"2":
-					card_name = "copper";
+					tmp = "copper";
 				break;
 				case"3":
 				case"4":
-					card_name = "silver";
+					tmp = "silver";
 				break;
 				case"5":
 				case"6":
-					card_name = "gold";
+					tmp = "gold";
 				break;
 			}
 
-			if(card_name!=role_border_type){
-				canvas.remove(myObj.border.instance);	
-				setBorder(card_name);
-				//將邊框送到倒數第二的圖層
-				myObj.border.instance.sendToBack();
-				if(role_img!=null){
-					role_img.sendToBack().setOpacity(1);
-				}
-				
-				role_border_type = card_name;
+			//如果與現在的框不同
+			if(tmp!=myObj.border.type){		
+				//刪掉舊的
+				$(window.canvas._objects).each(function(e, val){
+					//若屬性中圖片網址含有p1 img_path or p2 img_path的一部分，移除之
+					if(val.toString().indexOf(myObj.border.img_path.substr(1))>=0){
+					 	this.remove();
+					 	return false;
+					}
+				});
+				myObj.border.type = tmp;	
+				$.setBorder();
 			}
-		});
-		
-		//更改背景
-		var insert_bg_imgs = '';
-		for(var c=0; c<bg_imgs.length; c++){
-			insert_bg_imgs+='<a href="#" class="bg_imgs_change"><img src="'+bg_img_path+bg_imgs[c]+'.jpg" width="50px" height="50px" /></a> ';
-		}
-		$('div#bg_img_select').html(insert_bg_imgs);
-		
-		$('.bg_imgs_change').on('click',function(){
-			canvas.setBackgroundImage($(this).children('img').attr('src'), canvas.renderAll.bind(canvas));
 		});
 		
 		//角色圖片
@@ -379,8 +367,17 @@
 				readURL(this);
 			});
 		
-
+		//更改背景
+		var insert_bg_imgs = '';
+		for(var c=0; c<bg_imgs.length; c++){
+			insert_bg_imgs+='<a href="#" class="bg_imgs_change"><img src="'+bg_img_path+bg_imgs[c]+'.jpg" width="50px" height="50px" /></a> ';
+		}
+		$('div#bg_img_select').html(insert_bg_imgs);
 		
+		$('.bg_imgs_change').on('click',function(){
+			canvas.setBackgroundImage($(this).children('img').attr('src'), canvas.renderAll.bind(canvas));
+		});
+
 		//生成圖片
 		$('button#create').click(function(){
 			canvas.deactivateAll().renderAll();
@@ -394,10 +391,10 @@
 			$('#btn_hint').toggleClass('bg-success bg-warning');
 		});
 		
-		
-		$('button.btn-lg').tooltip();
-		
+				
 		//按鈕專區
+			//加入按鈕提示
+			$('button.btn-lg').tooltip();
 			//確定放置
 			$('button#moveOK').click(function(){
 				if(role_img==null) return;
@@ -417,10 +414,10 @@
 			});
 			//重設表單
 			$('button#resetForm').click(function(){
+				if(role_img==null) return;
+
 				//清除角色圖片
-				if(role_img!=null){
-					canvas.remove(role_img);
-				}
+				canvas.remove(role_img);
 				//清除三個數字輸入欄位
 				$("input[type=number]").val('').trigger('change');
 				//清除p1,p2,star按鈕
@@ -429,8 +426,8 @@
 				//清除邊框、星、p1、p2				
 				$(window.canvas._objects).removeThoseOnCanvas("all");
 				//恢復預設邊框
-				role_border_type = 'gold';
-				setBorder(role_border_type);
+				myObj.border.type = 'gold';
+				$.setBorder();
 			});
 		//三個隨機按鈕
 			$('button.random_btn').click(function(e){
@@ -438,13 +435,13 @@
 				var output = 0;
 				switch (this.value){
 					case "cost":
-						output = getRandCost(role_border_type);
+						output = getRandCost(myObj.border.type);
 					break;
 					case "hp":
-						output = getRandHpOrMp(role_border_type);
+						output = getRandHpOrMp(myObj.border.type);
 					break;
 					case "mp":
-						output = getRandHpOrMp(role_border_type);
+						output = getRandHpOrMp(myObj.border.type);
 					break;
 
 				}
@@ -452,9 +449,9 @@
 			});
 
 			//COST
-			function getRandCost(role_border_type){
+			function getRandCost(border_type){
 				var rand_cost = 0;
-				switch(role_border_type){
+				switch(border_type){
 					case "copper":
 						rand_cost = getRandomInt(3,10);
 					break;
@@ -469,9 +466,9 @@
 				return rand_cost;
 			}
 			//hp or mp
-			function getRandHpOrMp(role_border_type){
+			function getRandHpOrMp(border_type){
 				var rand = 0;
-				switch(role_border_type){
+				switch(border_type){
 					case "copper":
 						rand = getRandomInt(200,600);
 					break;
