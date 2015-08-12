@@ -72,7 +72,7 @@
 	//統一刪除
 	$.fn.removeThoseOnCanvas = function(condition){
 		
-		if(condition==false){
+		if(condition=="all"){
 			this.each(function(e, val){
 				//console.log("e="+e+" val="+val);
 				this.remove();
@@ -163,23 +163,10 @@
 			top: 0,
 			left: 0
 		};
-		switch (type){
-			case "p1":
-				setOptions.img_path = myObj.p1.img_path;
-				setOptions.width = myObj.p1.width;
-				setOptions.height = myObj.p1.height;
-				setOptions.top = myObj.p1.top;
-				setOptions.left = myObj.p1.left;
-			break;
-			case "p2":
-				setOptions.img_path = myObj.p2.img_path;
-				setOptions.width = myObj.p2.width;
-				setOptions.height = myObj.p2.height;
-				setOptions.top = myObj.p2.top;
-				setOptions.left = myObj.p2.left;
-			break;
-		}
-
+		//將setOptions的全部欄位 都以p1或p2的值填入
+		$.each(setOptions, function(index, value){	
+			setOptions[index] = myObj[type][index];
+		});
 		//刪掉舊的
 		$(window.canvas._objects).each(function(e, val){
 			//currentSrc 是已有的圖片網址
@@ -448,7 +435,7 @@
 				$('input[type=radio]').removeProp('checked')
 					.parent('label').removeClass('active');
 				//清除邊框、星、p1、p2				
-				$(window.canvas._objects).removeThoseOnCanvas(false);
+				$(window.canvas._objects).removeThoseOnCanvas("all");
 				//恢復預設邊框
 				role_border_type = 'gold';
 				setBorder(role_border_type);
