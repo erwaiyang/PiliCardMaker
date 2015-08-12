@@ -5,14 +5,8 @@
 	var bg_img_path = img_path + "bg/";
 	//border
 	var border_img_path = img_path + "border/";
-	//p1
-	var p1_img_path = img_path + "p1/";
-	//p2
-	var p2_img_path = img_path + "p2/";
 	//star
 	var star_img = img_path + "star/star.png";
-	//cost
-	var cost_img_path = img_path + "cost/";
 	//attr
 	var attr_img_path = img_path + "attr/";
 
@@ -29,7 +23,8 @@
 		'star': {
 			top:30,
 			left:78,
-			instance: null
+			instance: null,
+			img_path: img_path + 'star/'
 		},
 		'name': {
 			top:90,
@@ -53,17 +48,21 @@
 		'cost': {
 			top:410,
 			left:17,
-			instance: null
+			img_path: img_path + 'cost/'
 		},
 		'hp': {
 			top:355,
 			left:190,
-			instance: null
+			width: 18,
+			height: 22,
+			img_path: img_path + 'attr/'
 		},
 		'mp': {
 			top:385,
 			left:168,
-			instance: null
+			width: 18,
+			height: 22,
+			img_path: img_path + 'attr/'
 		}
 	};
 	//console.log('myObj.p1.instance='+myObj.p1.instance);
@@ -103,25 +102,19 @@
 		};
 		switch (type){
 			case "hp":
-				setOptions.path = attr_img_path;
-				setOptions.top = myObj.hp.top;
-				setOptions.left = myObj.hp.left;
-				setOptions.left_offset = setOptions.width;
-				setOptions.height = 22;
-			break;
 			case "mp":
-				setOptions.path = attr_img_path;
-				setOptions.top = myObj.mp.top;
-				setOptions.left = myObj.mp.left;
-				setOptions.left_offset = setOptions.width;
-				setOptions.height = 22;
+				setOptions.path = myObj[type].img_path;
+				setOptions.top = myObj[type].top;
+				setOptions.left = myObj[type].left;
+				setOptions.left_offset = myObj[type].width;
+				setOptions.height = myObj[type].height;
 			break;
 			case "cost":
 				//反轉順序
 				value = value.split("").reverse().join("");
 				//cost只有一位數時，將圖片往左移
 				var one_offset = (length==1)? -6:0;
-				setOptions.path = cost_img_path;
+				setOptions.path = myObj.cost.img_path;
 				setOptions.top = myObj.cost.top;
 				setOptions.left = myObj.cost.left + one_offset;
 				setOptions.left_offset = -13;
