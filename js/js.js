@@ -23,9 +23,8 @@
 		
 		if(condition==false){
 			this.each(function(e, val){
-				//0.1是邊框跟命武的漸層
-				if(e>1)
-					this.remove();
+				//console.log("e="+e+" val="+val);
+				this.remove();
 			});
 		}else{
 			this.each(function(e, val){
@@ -92,16 +91,21 @@
 		
 		var role_border = null;
 		var role_border_type = 'gold';
-		//邊框顏色
-		fabric.Image.fromURL(
-			border_img_path+'gold.png', 
-			function(o){
-				canvas.add(o);
-				role_border = o;
-			},
-			{
-				selectable:false
-			});
+
+		function setBorder(role_border_type){
+			fabric.Image.fromURL(
+				border_img_path+ role_border_type +'.png', 
+				function(o){
+					canvas.add(o);
+					role_border = o;
+				},
+				{
+					selectable:false
+				}
+			);
+		}
+		setBorder(role_border_type);
+
 	/****************控制區****************/
 		//名字輸入
 		var role_name = null;
@@ -210,9 +214,9 @@
 		
 		//更改星等
 		$("input[type=radio][name=p3]").on('change', function(e){
-			var role_star = (this.value);
+			var star = (this.value);
 			$(window.canvas._objects).removeThoseOnCanvas(30);
-			for(var b=0;b<role_star;b++){
+			for(var b=0;b<star;b++){
 				fabric.Image.fromURL(
 					star_img,
 					function(output){
@@ -230,7 +234,7 @@
 
 			//改邊框
 			var card_name = "";
-			switch(role_star){
+			switch(star){
 				case"1":
 				case"2":
 					card_name = "copper";
@@ -246,22 +250,13 @@
 			}
 
 			if(card_name!=role_border_type){
-				canvas.remove(role_border);				
-				fabric.Image.fromURL(
-					border_img_path + card_name+".png",
-					function(output){
-						canvas.add(output);
-						//將邊框送到倒數第二的圖層
-						canvas.sendToBack(output);
-						if(role_img!=null){
-							role_img.sendToBack().setOpacity(1);
-						}
-						role_border = output;
-					},
-					{
-						selectable:false
-					}
-				); 
+				canvas.remove(role_border);	
+				setBorder(card_name);
+				//將邊框送到倒數第二的圖層
+				canvas.sendToBack(role_border);
+				if(role_img!=null){
+					role_img.sendToBack().setOpacity(1);
+				}
 				
 				role_border_type = card_name;
 			}
@@ -357,10 +352,20 @@
 			});
 			//重設表單
 			$('button#resetForm').click(function(){
-				canvas.remove(role_img);
-				$("input").val('');
-				$("input[name=p1]").button('reset');
-				//$(window.canvas._objects).removeThoseOnCanvas(false);
+				//清除角色圖片
+				if(role_img!=null){
+					canvas.remove(role_img);
+				}
+				//清除三個數字輸入欄位
+				$("input[type=number]").val('').trigger('change');
+				//清除p1,p2,star按鈕
+				$('input[type=radio]').removeProp('checked')
+					.parent('label').removeClass('active');
+				//清除邊框、星、p1、p2				
+				$(window.canvas._objects).removeThoseOnCanvas(false);
+				//恢復預設邊框
+				role_border_type = 'gold';
+				setBorder(role_border_type);
 			});
 		//三個隨機按鈕
 			$('button.random_btn').click(function(e){
