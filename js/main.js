@@ -16,6 +16,53 @@
 	//attr
 	var attr_img_path = img_path + "attr/";
 
+	//各個在畫面上的位置
+	var myObj = {
+		'img':{
+			instance: null
+		},
+		'border': {
+			top:0,
+			left:0,
+			instance: null
+		},
+		'star': {
+			top:30,
+			left:78,
+			instance: null
+		},
+		'name': {
+			top:90,
+			left:16,
+			instance: null
+		},
+		'p1': {
+			top:0,
+			left:0,
+			instance: null
+		},
+		'p2': {
+			top:5,
+			left:266,
+			instance: null
+		},
+		'cost': {
+			top:410,
+			left:17,
+			instance: null
+		},
+		'hp': {
+			top:355,
+			left:190,
+			instance: null
+		},
+		'mp': {
+			top:385,
+			left:168,
+			instance: null
+		}
+	};
+
 	
 (function($){
 	//統一刪除
@@ -37,48 +84,69 @@
 		canvas.renderAll();
 		return true;
 	};
-	
-	$.setNumbers = function(hpORmp,set_top,set_left){
-		var leng = hpORmp.length;
-		for(var d=leng-1; d>=0; d--){
-			fabric.Image.fromURL(
-				attr_img_path+hpORmp[d]+'.png',
-				function(output_hp){
-					canvas.add(output_hp);
-				},
-				{
-					left:set_left + d * 18,
-					top:set_top,
-					width:18,
-					height:22,
-					selectable:false
-				}
-			);
-		}
-	};
-	
-	$.setCost = function(cost, set_top, set_left){
-		var leng = cost.length;
-		//反轉字串順序
-		cost = cost.split("").reverse().join("");
-		//cost只有一位數時，將圖片往左移
-		var offset = (cost.length==1)? -6:0;
 
-		for(var d=leng-1; d>=0; d--){
+	$.setNumber = function(type, value){
+		var length = value.length;
+
+		var setOptions = {
+			'path': null,
+			'top': 0,
+			'left': 0,
+			'left_offset':0,
+			'width':18,
+			'height':18
+		};
+		switch (type){
+			case "hp":
+				setOptions.path = attr_img_path;
+				setOptions.top = myObj.hp.top;
+				setOptions.left = myObj.hp.left;
+				setOptions.left_offset = setOptions.width;
+				setOptions.height = 22;
+			break;
+			case "mp":
+				setOptions.path = attr_img_path;
+				setOptions.top = myObj.mp.top;
+				setOptions.left = myObj.mp.left;
+				setOptions.left_offset = setOptions.width;
+				setOptions.height = 22;
+			break;
+			case "cost":
+				//反轉順序
+				value = value.split("").reverse().join("");
+				//cost只有一位數時，將圖片往左移
+				var one_offset = (length==1)? -6:0;
+				setOptions.path = cost_img_path;
+				setOptions.top = myObj.cost.top;
+				setOptions.left = myObj.cost.left + one_offset;
+				setOptions.left_offset = -13;
+			break;
+			default:
+				return false;
+		}
+
+		//remove old one
+		$(window.canvas._objects).removeThoseOnCanvas(setOptions.top);
+
+		//add numbers on the canvas
+		for(var d=length-1; d>=0; d--){
 			fabric.Image.fromURL(
-				cost_img_path + cost[d] + '.png',
-				function(role_cost){
-					canvas.add(role_cost);
+				setOptions.path + value[d] + '.png',
+				function(output){
+					canvas.add(output);
 				},
 				{
-					left:set_left + offset + d*(-12),
-					top:set_top,
+					left: setOptions.left + d * (setOptions.left_offset),
+					top: setOptions.top,
 					width:18,
-					height:18,
+					height: setOptions.height,
 					selectable:false
 				}
 			);
 		}
+
+		//render
+		canvas.renderAll();
 	};
 
 })(jQuery);
@@ -89,15 +157,15 @@
 		//設定背景
 		canvas.setBackgroundImage(bg_img_path+'green.jpg', canvas.renderAll.bind(canvas));
 		
-		var role_border = null;
+		//var role_border = null;
 		var role_border_type = 'gold';
 
 		function setBorder(role_border_type){
 			fabric.Image.fromURL(
 				border_img_path+ role_border_type +'.png', 
-				function(o){
-					canvas.add(o);
-					role_border = o;
+				function(output){
+					canvas.add(output);
+					myObj.border.instance = output;
 				},
 				{
 					selectable:false
@@ -183,37 +251,23 @@
 		});
 		
 		//更改COST
-		var role_cost = null;
 		$('#input_cost').change(function(e){
-			var top = 410, left=17;
-			$(window.canvas._objects).removeThoseOnCanvas(top);
-			var cost = $(this).val();
-			$.setCost(cost, top, left);
-			canvas.renderAll();
+			$.setNumber('cost', $(this).val());
 		});
 		
 		//更改HP
 		$('#input_hp').change(function(e){
-			var hp_top = 355, hp_left=190;
-			$(window.canvas._objects).removeThoseOnCanvas(hp_top);
-			var role_hp = $(this).val();
-			$.setNumbers(role_hp,hp_top,hp_left);
-			
-			canvas.renderAll();
+			$.setNumber('hp', $(this).val());
 		});
 		
 		//更改MP
 		$('#input_mp').change(function(e){
-			var mp_top = 385, mp_left = 168;
-			$(window.canvas._objects).removeThoseOnCanvas(mp_top);
-			var role_mp = $(this).val();
-			$.setNumbers(role_mp,mp_top,mp_left);
-			
-			canvas.renderAll();
+			$.setNumber('mp', $(this).val());
 		});
 		
 		//更改星等
 		$("input[type=radio][name=p3]").on('change', function(e){
+			//更改星星：先刪光再放上去
 			var star = (this.value);
 			$(window.canvas._objects).removeThoseOnCanvas(30);
 			for(var b=0;b<star;b++){
@@ -250,10 +304,10 @@
 			}
 
 			if(card_name!=role_border_type){
-				canvas.remove(role_border);	
+				canvas.remove(myObj.border.instance);	
 				setBorder(card_name);
 				//將邊框送到倒數第二的圖層
-				canvas.sendToBack(role_border);
+				myObj.border.instance.sendToBack();
 				if(role_img!=null){
 					role_img.sendToBack().setOpacity(1);
 				}
