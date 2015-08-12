@@ -65,8 +65,6 @@
 			img_path: img_path + 'attr/'
 		}
 	};
-	//console.log('myObj.p1.instance='+myObj.p1.instance);
-	
 (function($){
 	//統一刪除
 	$.fn.removeThoseOnCanvas = function(condition){
@@ -159,13 +157,13 @@
 		//將setOptions的全部欄位 都以p1或p2的值填入
 		$.each(setOptions, function(index, value){	
 			setOptions[index] = myObj[type][index];
-		});
+		});		
 		//刪掉舊的
 		$(window.canvas._objects).each(function(e, val){
-			//currentSrc 是已有的圖片網址
-			if(this._originalElement.currentSrc.indexOf(setOptions.img_path.substr(1))>=0){
-				this.remove();
-				return false;
+			//若屬性中圖片網址含有p1 img_path or p2 img_path的一部分，移除之
+			if(val.toString().indexOf(setOptions.img_path.substr(1))>=0){
+			 	this.remove();
+			 	return false;
 			}
 		});
 		fabric.Image.fromURL(
@@ -244,6 +242,7 @@
 			); 
 			
 			canvas.add(myObj.name.instance).renderAll();
+			console.log($(window.canvas._objects));
 		});
 		//更改勢力範圍(p1)
 		$("input[type=radio][name=p1]").on('change', function(e){
