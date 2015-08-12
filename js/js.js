@@ -301,7 +301,8 @@
 								cornerColor: 'green',
 								cornerSize: 10,
 								cornerSize: 15,
-								transparentCorners: false
+								transparentCorners: false,
+								lockUniScaling :true
 							});
 							canvas.setActiveObject(oImg);
 							//this.__canvas.push(canvas);
