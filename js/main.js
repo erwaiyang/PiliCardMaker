@@ -39,12 +39,16 @@
 		'p1': {
 			top:0,
 			left:0,
-			instance: null
+			width:65,
+			height:62,
+			img_path: img_path + 'p1/'
 		},
 		'p2': {
 			top:5,
 			left:266,
-			instance: null
+			width:36,
+			height:36,
+			img_path: img_path + 'p2/'
 		},
 		'cost': {
 			top:410,
@@ -62,7 +66,7 @@
 			instance: null
 		}
 	};
-
+	//console.log('myObj.p1.instance='+myObj.p1.instance);
 	
 (function($){
 	//統一刪除
@@ -85,6 +89,7 @@
 		return true;
 	};
 
+	//for cost, hp and mp
 	$.setNumber = function(type, value){
 		var length = value.length;
 
@@ -149,6 +154,56 @@
 		canvas.renderAll();
 	};
 
+	//for p1 and p2
+	$.setProp1n2 = function(type, value){
+		var setOptions = {
+			img_path: null,
+			width: 0,
+			height: 0,
+			top: 0,
+			left: 0
+		};
+		switch (type){
+			case "p1":
+				setOptions.img_path = myObj.p1.img_path;
+				setOptions.width = myObj.p1.width;
+				setOptions.height = myObj.p1.height;
+				setOptions.top = myObj.p1.top;
+				setOptions.left = myObj.p1.left;
+			break;
+			case "p2":
+				setOptions.img_path = myObj.p2.img_path;
+				setOptions.width = myObj.p2.width;
+				setOptions.height = myObj.p2.height;
+				setOptions.top = myObj.p2.top;
+				setOptions.left = myObj.p2.left;
+			break;
+		}
+
+		//刪掉舊的
+		$(window.canvas._objects).each(function(e, val){
+			//currentSrc 是已有的圖片網址
+			if(this._originalElement.currentSrc.indexOf(setOptions.img_path.substr(1))>=0){
+				this.remove();
+				return false;
+			}
+		});
+		fabric.Image.fromURL(
+			setOptions.img_path + value + ".png",
+			function(output){
+				canvas.add(output);
+			},				
+			{
+				left: setOptions.left,
+				top: setOptions.top,
+				width: setOptions.width,
+				height: setOptions.height,
+				selectable:false
+			}
+		);
+		canvas.renderAll();
+	};
+
 })(jQuery);
 	
 	/****************畫布設定****************/
@@ -210,48 +265,14 @@
 			
 			canvas.add(myObj.name.instance).renderAll();
 		});
-		
 		//更改勢力範圍(p1)
-		var role_p1 = null;
 		$("input[type=radio][name=p1]").on('change', function(e){
-
-			canvas.remove(role_p1);
-			var p1 = this.value;
-			fabric.Image.fromURL(
-				p1_img_path + p1 + ".png",
-				function(output){
-					canvas.add(output);
-					role_p1 = output;
-				},				
-				{
-					left:0,
-					top:0,
-					width:65,
-					height:62,
-					selectable:false
-				}
-			);					
+			$.setProp1n2('p1', this.value);
 		});
 		
 		//更改性格(p2)
-		var role_p2 = null;
 		$("input[type=radio][name=p2]").on('change', function(e){
-			canvas.remove(role_p2);
-			var p2 = this.value;
-			fabric.Image.fromURL(
-				p2_img_path + p2 + ".png",
-				function(output2){
-					canvas.add(output2);
-					role_p2 = output2;
-				},
-				{
-					left:266,
-					top:5,
-					width:36,
-					height:36,
-					selectable:false
-				}
-			); 
+			$.setProp1n2('p2', this.value);
 		});
 		
 		//更改COST
