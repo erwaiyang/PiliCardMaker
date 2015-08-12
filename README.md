@@ -6,6 +6,9 @@
 MIT License.
 
 ***
+## 原始碼
+請切換至[gh-pages分支](https://github.com/erwaiyang/PiliCardMaker/tree/gh-pages)查看。
+***
 
 ##線上使用網頁
 [GitHub.io](http://erwaiyang.github.io/PiliCardMaker/)
