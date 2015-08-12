@@ -342,16 +342,19 @@
 		//按鈕專區
 			//確定放置
 			$('button#moveOK').click(function(){
+				if(role_img==null) return;
 				role_img.sendToBack().setOpacity(1);
 				canvas.renderAll();
 			});
 			//移除圖片
 			$('button#removePic').click(function(){
+				if(role_img==null) return;
 				canvas.remove(role_img).renderAll();
 				$('input#filePhoto').val('');
 			});
 			//重新選中圖片
 			$('button#selectAgain').click(function(){
+				if(role_img==null) return;
 				canvas.setActiveObject(role_img);
 			});
 			//重設表單
@@ -500,7 +503,13 @@
 		dataType: 'html',
 		success: function (data){
 			$('body').append(data);
-			$('img.manual').css('width', $(window).width() * 0.8 *0.9);
+			$('img.manual')
+				.css(
+					{
+						'width': $(window).width() * 0.8 *0.9,
+						'margin': '0 auto'
+					}
+				);
 		}
 	});
 	$('#plaintext a').click(function (e) {
