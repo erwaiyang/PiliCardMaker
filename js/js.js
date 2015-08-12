@@ -330,6 +330,9 @@
 			$('#download_link').html('[<a href="'+url+'" target="_blank">下載圖片(請按右鍵另存)</a>]');
 			//var export_img = canvas.toDataURL("image/jpeg");
 			//window.open(test,'卡片',config='height=600,width=600');
+			//重新生成的提示
+			$(this).toggleClass('btn-success btn-warning');
+			$('#btn_hint').toggleClass('bg-success bg-warning');
 		});
 		
 		
