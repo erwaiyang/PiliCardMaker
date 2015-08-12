@@ -500,6 +500,7 @@
 		dataType: 'html',
 		success: function (data){
 			$('body').append(data);
+			$('img.manual').css('width', $(window).width() * 0.8 *0.9);
 		}
 	});
 	$('#plaintext a').click(function (e) {
