@@ -501,3 +501,11 @@
 			$('body').append(data);
 		}
 	});
+	$('#plaintext a').click(function (e) {
+		e.preventDefault();
+		$(this).tab('show');
+	});
+	$('#figures a').click(function (e) {
+		e.preventDefault();
+		$(this).tab('show');
+	});
