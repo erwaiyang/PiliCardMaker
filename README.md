@@ -1,8 +1,7 @@
 ﻿# 霹靂群雄戰之自己動手做卡片
 
 ##馬上使用「霹靂群雄戰之自己動手做卡片」！
-[GitHub.io](http://erwaiyang.github.io/PiliCardMaker/)
-[OpenShift](http://pilicardmaker-erwai.rhcloud.com/)
+[GitHub.io](http://jeanycyang.github.io/PiliCardMaker/)
 
 ***
 
